@@ -1,0 +1,33 @@
+name: Powertrain SIL Automated Testing
+
+# This pipeline runs automatically every time you push code to GitHub!
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_and_test:
+    # We use a cloud Linux server to compile and test our code
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake gcc python3 python3-pip
+        pip3 install matplotlib
+
+    - name: Build Powertrain vECUs (CMake)
+      run: |
+        cmake .
+        make
+
+    - name: Run SIL Network Automated Test
+      # If the C-code crashes or the Python asserts fail, this step fails 
+      # and puts a red X on the GitHub pull request!
+      run: python3 SIL_Simulation/test_runner.py
