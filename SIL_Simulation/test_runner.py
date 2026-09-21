@@ -6,9 +6,19 @@ import matplotlib.pyplot as plt
 def run_network_simulation():
     print("Executing Distributed vECU Network Simulation...")
     
-    # Run the compiled executable (Assuming we run python from the SIL_Simulation folder, or root)
+    # Run the compiled executable cross-platform (Windows vs Linux CI/CD)
     import os
-    exe_path = '.\\network_sil.exe' if os.path.exists('.\\network_sil.exe') else '..\\network_sil.exe'
+    import sys
+    
+    # Determine the executable name based on the OS
+    exe_name = 'network_sil.exe' if sys.platform == 'win32' else 'network_sil'
+    
+    # Check if we are running from root or from SIL_Simulation folder
+    if os.path.exists(os.path.join('.', exe_name)):
+        exe_path = os.path.join('.', exe_name)
+    else:
+        exe_path = os.path.join('..', exe_name)
+        
     process = subprocess.run([exe_path], capture_output=True, text=True)
     
     if process.returncode != 0:
