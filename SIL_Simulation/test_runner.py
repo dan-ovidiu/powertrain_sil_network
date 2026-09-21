@@ -40,8 +40,22 @@ def main():
     steps, throttles, gears, rpms, speeds = run_network_simulation()
     
     if not steps:
-        return
+        print("Error: No data parsed from simulation.")
+        exit(1)
 
+    # --- CI/CD AUTOMATED ASSERTIONS ---
+    print("Running Automated Tests...")
+    # Test 1: Did the simulation run to completion?
+    assert len(steps) == 100, f"Expected 100 steps, got {len(steps)}"
+    # Test 2: Did the transmission shift into 3rd gear by the end?
+    assert gears[-1] == 3, f"Expected final gear to be 3, got {gears[-1]}"
+    print("All Tests Passed! ✅")
+
+    # --- PLOTTING ---
+    import matplotlib
+    # Use the non-interactive backend for GitHub Actions (no display error)
+    matplotlib.use('Agg')
+    
     # Create a 4-part plot to visualize the entire network
     fig, (ax1, ax2, ax3, ax4) = plt.subplots(4, 1, figsize=(10, 10), sharex=True)
     
@@ -69,7 +83,9 @@ def main():
     ax4.grid(True)
     
     plt.tight_layout()
-    plt.show()
+    # Save the file instead of opening a GUI window (which crashes cloud servers)
+    plt.savefig('sil_test_report.png')
+    print("Plot saved to sil_test_report.png")
 
 if __name__ == "__main__":
     main()
