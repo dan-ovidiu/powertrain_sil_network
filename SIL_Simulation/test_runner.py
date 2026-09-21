@@ -1,6 +1,8 @@
 import subprocess
 import csv
 import io
+import matplotlib
+matplotlib.use('Agg') # Must be called BEFORE importing pyplot
 import matplotlib.pyplot as plt
 
 def run_network_simulation():
@@ -62,9 +64,6 @@ def main():
     print("All Tests Passed! ✅")
 
     # --- PLOTTING ---
-    import matplotlib
-    # Use the non-interactive backend for GitHub Actions (no display error)
-    matplotlib.use('Agg')
     
     # Create a 4-part plot to visualize the entire network
     fig, (ax1, ax2, ax3, ax4) = plt.subplots(4, 1, figsize=(10, 10), sharex=True)
