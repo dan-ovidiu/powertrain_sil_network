@@ -4,7 +4,7 @@
 #include "../Transmission_vECU/transmission.h"
 #include "../FMU_Plant/fmu_powertrain.h"
 #include "../Virtual_CAN/vcan.h"
-void OS_Start(void)
+void OS_Start(float test_throttle)
 {
     VCAN_Init();
     Engine_Init();
@@ -19,7 +19,7 @@ void OS_Start(void)
         // --- STIMULI INJECTION (From Python test script) ---
         // For testing, if step > 10, the driver pushes the gas pedal to 100%
         if (step > 10 && step < 60) {
-            bus->throttle_pedal = 100.0f;
+            bus->throttle_pedal = test_throttle; // 0.0 to 100.0 %
         } else if (step >= 60) {
             // Driver releases the gas pedal
             bus->throttle_pedal = 0.0f; 
