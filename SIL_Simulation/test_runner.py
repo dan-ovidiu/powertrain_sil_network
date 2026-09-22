@@ -61,7 +61,7 @@ def main():
     assert len(steps) == 100, f"Expected 100 steps, got {len(steps)}"
     # Test 2: Did the transmission shift into 3rd gear by the end?
     assert gears[-1] == 3, f"Expected final gear to be 3, got {gears[-1]}"
-    print("All Tests Passed! ✅")
+    print("All Tests Passed!")
 
     # --- PLOTTING ---
     
