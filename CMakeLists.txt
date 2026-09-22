@@ -7,6 +7,10 @@ set(SOURCES
     Engine_vECU/engine.c
     Transmission_vECU/transmission.c
     FMU_Plant/fmu_powertrain.c
+    RTE/rte.c
+    BSW/com.c
+    BSW/os_scheduler.c
+    MCAL/mcal_virtual.c
 )
 
 add_executable(network_sil ${SOURCES})

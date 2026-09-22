@@ -4,6 +4,11 @@
 // Internal Physics State
 static float vehicle_speed = 0.0f; // m/s
 static float internal_rpm = 800.0f;
+static float electrical_power_cmd = 0.0f;
+
+void FMU_SetEnginePower(float power_cmd) {
+    electrical_power_cmd = power_cmd;
+}
 
 void FMU_Init(void) {
     vehicle_speed = 0.0f;
@@ -13,7 +18,7 @@ void FMU_Init(void) {
 void FMU_DoStep(void) {
     // 1. Read Inputs (from Virtual Environment)
     Virtual_CAN_Bus_t* bus = VCAN_GetBus();
-    float engine_power = bus->engine_power_cmd; 
+    float engine_power = electrical_power_cmd; // Simulating the ECU control via physical wires, not via CAN
     int gear = bus->current_gear;
     
     // 2. Physics Equations
@@ -33,3 +38,4 @@ void FMU_DoStep(void) {
     bus->engine_rpm = internal_rpm;
     bus->vehicle_speed_kmh = vehicle_speed * 3.6f;
 }
+
